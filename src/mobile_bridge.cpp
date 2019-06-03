@@ -32,14 +32,18 @@
 
 int main(int argc, char * argv[])
 {
-  std::vector<std::pair<std::string, std::string>> topics;
-
-  for(int i = 0; i < argc; ++i) {
-    std::cout << argv[i] << std::endl;
-  }
-   
-  for(int i = 1; i < argc; i += 2) {
-    topics.push_back(std::make_pair(std::string(argv[i]), std::string(argv[i+1])));
+//  std::vector<std::pair<std::string, std::string>> topics;
+//
+//  for(int i = 0; i < argc; ++i) {
+//    std::cout << argv[i] << std::endl;
+//  }
+//   
+//  for(int i = 1; i < argc; i += 2) {
+//    topics.push_back(std::make_pair(std::string(argv[i]), std::string(argv[i+1])));
+//  }
+  std::string robot_name("default");
+  if(argc == 2) {
+    robot_name = std::string(argv[1]);
   }
 
   // ROS 1 node
@@ -52,13 +56,37 @@ int main(int argc, char * argv[])
 
   size_t queue_size = 10;
 
-  std::vector<ros1_bridge::BridgeHandles> handles;
-  for(auto &pair : topics) {
-    handles.push_back(
-      ros1_bridge::create_bidirectional_bridge(
-        ros1_node, ros2_node, pair.second, pair.second, pair.first, queue_size)
-    );
-  }
+  //std::vector<ros1_bridge::BridgeHandles> handles;
+  //for(auto &pair : topics) {
+  //  handles.push_back(
+  //    ros1_bridge::create_bidirectional_bridge(
+  //      ros1_node, ros2_node, pair.second, pair.second, pair.first, queue_size)
+  //  );
+  //}
+
+  std::vector<ros1_bridge::Bridge1to2Handles> out_handles;
+  out_handles.push_back(
+    ros1_bridge::create_bridge_from_1_to_2(
+      ros1_node, ros2_node, std::string("geometry_msgs/PoseStamped"), std::string("/robot_pose"), queue_size,
+      std::string("geometry_msgs/PoseStamped"), robot_name + std::string("/pose"), queue_size)
+  );
+  out_handles.push_back(
+    ros1_bridge::create_bridge_from_1_to_2(
+      ros1_node, ros2_node, std::string("std_msgs/Bool"), std::string("/switch_found"), queue_size,
+      std::string("std_msgs/Bool"), robot_name + std::string("/switch_found"), queue_size)
+  );
+  out_handles.push_back(
+    ros1_bridge::create_bridge_from_1_to_2(
+      ros1_node, ros2_node, std::string("nav_msgs/OccupancyGrid"), std::string("/costmap_repeating"), queue_size,
+      std::string("nav_msgs/OccupancyGrid"), robot_name + std::string("/costmap"), queue_size)
+  );
+
+  std::vector<ros1_bridge::Bridge2to1Handles> in_handles;
+  in_handles.push_back(
+    ros1_bridge::create_bridge_from_2_to_1(
+      ros2_node, ros1_node, std::string("nav_msgs/Path"), robot_name + std::string("/path"), queue_size,
+      std::string("nav_msgs/Path"), std::string("/path"), queue_size)
+  );
 
   // bridge one example topic
   // std::string topic_name = "chatter";
