@@ -88,6 +88,12 @@ int main(int argc, char * argv[])
       std::string("nav_msgs/Path"), std::string("/path"), queue_size)
   );
 
+  auto handles_feedback = ros1_bridge::create_bidirectional_bridge(
+		  ros1_node, ros2_node, "std_msgs/String", "std_msgs/String", "/accept_feedback", queue_size);
+
+  auto handles_time_coord = ros1_bridge::create_bidirectional_bridge(
+		  ros1_node, ros2_node, "std_msgs/Time", "std_msgs/Time", "/time_coord", queue_size);
+
   // bridge one example topic
   // std::string topic_name = "chatter";
   // std::string ros1_type_name = "std_msgs/String";
