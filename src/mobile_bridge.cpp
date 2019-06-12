@@ -92,7 +92,7 @@ int main(int argc, char * argv[])
 		  ros1_node, ros2_node, "std_msgs/String", "std_msgs/String", "/accept_feedback", queue_size);
 
   auto handles_time_coord = ros1_bridge::create_bidirectional_bridge(
-		  ros1_node, ros2_node, "std_msgs/Time", "std_msgs/Time", "/time_coord", queue_size);
+		  ros1_node, ros2_node, "std_msgs/Header", "std_msgs/Header", "/time_coord", queue_size);
 
   // bridge one example topic
   // std::string topic_name = "chatter";
