@@ -70,15 +70,65 @@ int main(int argc, char * argv[])
       ros1_node, ros2_node, std::string("geometry_msgs/PoseStamped"), std::string("/robot_pose"), queue_size,
       std::string("geometry_msgs/PoseStamped"), robot_name + std::string("/pose"), queue_size)
   );
+
   out_handles.push_back(
     ros1_bridge::create_bridge_from_1_to_2(
       ros1_node, ros2_node, std::string("std_msgs/Bool"), std::string("/switch_found"), queue_size,
       std::string("std_msgs/Bool"), robot_name + std::string("/switch_found"), queue_size)
   );
+
   out_handles.push_back(
     ros1_bridge::create_bridge_from_1_to_2(
       ros1_node, ros2_node, std::string("nav_msgs/OccupancyGrid"), std::string("/costmap_repeating"), queue_size,
       std::string("nav_msgs/OccupancyGrid"), robot_name + std::string("/costmap"), queue_size)
+  );
+
+  out_handles.push_back(
+    ros1_bridge::create_bridge_from_1_to_2(
+      ros1_node, ros2_node, std::string("sensor_msgs/LaserScan"), std::string("/scan"), queue_size,
+      std::string("sensor_msgs/LaserScan"), robot_name + std::string("/scan"), queue_size)
+  );
+
+  out_handles.push_back(
+    ros1_bridge::create_bridge_from_1_to_2(
+      ros1_node, ros2_node, std::string("tf2_msgs/TFMessage"), std::string("/tf"), queue_size,
+      std::string("tf2_msgs/TFMessage"), robot_name + std::string("/tf"), queue_size)
+  );
+
+  out_handles.push_back(
+    ros1_bridge::create_bridge_from_1_to_2(
+      ros1_node, ros2_node, std::string("tf2_msgs/TFMessage"), std::string("/tf_static"), queue_size,
+      std::string("tf2_msgs/TFMessage"), robot_name + std::string("/tf_static"), queue_size)
+  );
+
+  out_handles.push_back(
+    ros1_bridge::create_bridge_from_1_to_2(
+      ros1_node, ros2_node, std::string("sensor_msgs/Image"), std::string("/usb_cam/image_raw"), queue_size,
+      std::string("sensor_msgs/Image"), robot_name + std::string("/usb_cam/image_raw"), queue_size)
+  );
+
+  out_handles.push_back(
+    ros1_bridge::create_bridge_from_1_to_2(
+      ros1_node, ros2_node, std::string("sensor_msgs/CameraInfo"), std::string("/usb_cam/camera_info"), queue_size,
+      std::string("sensor_msgs/CameraInfo"), robot_name + std::string("/usb_cam/camera_info"), queue_size)
+  );
+
+  out_handles.push_back(
+    ros1_bridge::create_bridge_from_1_to_2(
+      ros1_node, ros2_node, std::string("geometry_msgs/Twist"), std::string("/cmd_vel"), queue_size,
+      std::string("geometry_msgs/Twist"), robot_name + std::string("/cmd_vel"), queue_size)
+  );
+
+  out_handles.push_back(
+    ros1_bridge::create_bridge_from_1_to_2(
+      ros1_node, ros2_node, std::string("nav_msgs/OccupancyGrid"), std::string("/map"), queue_size,
+      std::string("nav_msgs/OccupancyGrid"), robot_name + std::string("/map"), queue_size)
+  );
+
+  out_handles.push_back(
+    ros1_bridge::create_bridge_from_1_to_2(
+      ros1_node, ros2_node, std::string("nav_msgs/Odometry"), std::string("/odom"), queue_size,
+      std::string("nav_msgs/Odometry"), robot_name + std::string("/odom"), queue_size)
   );
 
   std::vector<ros1_bridge::Bridge2to1Handles> in_handles;
